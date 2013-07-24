@@ -16,16 +16,19 @@ echo "tmpfs  /run tmpfs rw,noexec,nosuid,relatime,gid=5,mode=0620,ptmxmode=000 0
 #remove clear option from tty (add --noclear)
 echo "darkplace" > etc/hostname
 
-mkdir lib/modules/
+[ -d /run ] || mkdir lib/modules/
 cp -ar /lib/modules/3.2.0-4-486/ lib/modules/
 rm -rf lib/modules/3.2.0-4-486/kernel/drivers/bluetooth \
-lib/modules/3.2.0-4-486/kernel/drivers/cdrom \
-lib/modules/3.2.0-4-486/kernel/drivers/firewire \
-lib/modules/3.2.0-4-486/kernel/drivers/ieee802154 \
-lib/modules/3.2.0-4-486/kernel/drivers/infiniband \
-lib/modules/3.2.0-4-486/kernel/drivers/isdn \
-lib/modules/3.2.0-4-486/kernel/drivers/pcmcia \
-lib/modules/3.2.0-4-486/kernel/drivers/telephony
+  lib/modules/3.2.0-4-486/kernel/drivers/cdrom \
+  lib/modules/3.2.0-4-486/kernel/drivers/firewire \
+  lib/modules/3.2.0-4-486/kernel/drivers/ieee802154 \
+  lib/modules/3.2.0-4-486/kernel/drivers/infiniband \
+  lib/modules/3.2.0-4-486/kernel/drivers/isdn \
+  lib/modules/3.2.0-4-486/kernel/drivers/pcmcia \
+  lib/modules/3.2.0-4-486/kernel/drivers/telephony
 
 find . | cpio -o -H newc |gzip > ../wheezy-net.cpio.gz
+
 cd -
+
+exit 0
