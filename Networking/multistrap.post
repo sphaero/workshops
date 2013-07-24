@@ -32,3 +32,6 @@ find . | cpio -o -H newc |gzip > ../wheezy-net.cpio.gz
 cd -
 
 exit 0
+## AFTER BOOT YOU MIGHT WANT TO
+#dpkg-reconfigure debconf
+#dpkg-reconfigure -a
