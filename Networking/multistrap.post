@@ -9,9 +9,9 @@ echo 'root:$6$Lx5oRYXR$XEECzCqMv7JDjDNjCW41al8SvNfFzheRFI3Lo/gDK/NTeyJEPjF5LEqM7
 [ -d /dev/pts ] || mkdir /dev/pts
 [ -d /run ] || mkdir /run
 echo "proc /proc proc nodev,noexec,nosuid   0 0" > etc/fstab
-echo "sys  /sysfs sysfs nodev,noexec,nosuid 0 0" >> /etc/fstab
-echo "devpts /dev/pts devpts nodev,noexec,gid=5,mode=0620 0 0" >> /etc/fstab
-echo "tmpfs  /run tmpfs rw,noexec,nosuid,relatime,gid=5,mode=0620,ptmxmode=000 0 0" >> /etc/fstab
+echo "sys  /sysfs sysfs nodev,noexec,nosuid 0 0" >> etc/fstab
+echo "devpts /dev/pts devpts nodev,noexec,gid=5,mode=0620 0 0" >> etc/fstab
+echo "tmpfs  /run tmpfs rw,noexec,nosuid,relatime,gid=5,mode=0620,ptmxmode=000 0 0" >> etc/fstab
 
 #remove clear option from tty (add --noclear)
 echo "darkplace" > etc/hostname
