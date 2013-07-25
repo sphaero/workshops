@@ -4,7 +4,8 @@ DIR=`dirname $0`
 cd $DIR/wheezy-net
 
 #root passwd
-echo 'root:$6$Lx5oRYXR$XEECzCqMv7JDjDNjCW41al8SvNfFzheRFI3Lo/gDK/NTeyJEPjF5LEqM7UKtoSPavDIt.LckVlEBKXsJQyLcH0:15875:0:99999:7:::' > etc/shadow
+#echo 'root::0:99999:7:::' > etc/shadow
+sed -i 's/root:x:/root::/' etc/passwd
 
 [ -d /dev/pts ] || mkdir /dev/pts
 [ -d /run ] || mkdir /run
