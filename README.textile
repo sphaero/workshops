@@ -1,20 +1,36 @@
 Files from my workshops
 
-= Linux Up And Runnning =
+h1. Linux Up And Runnning
 
-A workshop about the simplicity of getting Linux up and running and with software running on your GNU/Linux operating system
+Enrich your possibilities using Linux. However to do so you need to know so. This workshops shows you the simplicity of Linux and what it needs to run your software.
 
-= Spatial Aware Projection =
+Linux is the community build operating system used in almost every device you can imagine. The success of the Linux is not without reason but it's not a project that comes with a printed manual.
+In this workshop you will be shown what Linux is, how it operates and how it is used. We'll especially look into how you can get Linux up and running for your own purposes.
+
+h1. Spatial Aware Projection 
 
 A workshop about spatial aware projection using Blender, Raspberry Pi's and some smart networking.
 
-= Networking =
+During this workshop we will use "Blender":http://blender.org to create an immersive projected environment using 
+"Raspberry Pi's":http://www.raspberrypi.org/faqs and a bunch of projectors. All you need to bring with you is your 
+laptop and Blender which you can "download for free":http://www.blender.org/download/get-blender/ 
 
-A workshop about TCP/IP, IPv4, IPv6  and all what you need to know about networking
+This workshop was given at: "Setup Party technology":http://setup.nl/content/open-source-workshop-2-party-technology
 
-= Licence =
+h1. Networking
+
+Learn about computer networks, what it is, how it works and how you can make it do what you need it to do.
+A workshop about TCP/IP, IPv4, IPv6 and all what you need to know about networking.
+
+Today's society has grown very dependent on computer networks. Networking is everywhere. The good news is that the technology has become a commodity. 
+What has not become a commodity is how it operates. This workshop will teach you the essentials of networking and will show the simplicity of it.
+
+h1. Digital Taming
+
+Practical advice for using computers in performances
+
+h1 Licence
 
 All files are CC-NA licensed unless noted otherwise
-
 
 <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.nl"><img alt="Creative Commons-Licentie" style="border-width:0" src="http://i.creativecommons.org/l/by-nc/3.0/88x31.png" /></a><br />Dit werk is gelicenseerd onder een <a rel="license" href="http://creativecommons.org/licenses/by-nc/3.0/deed.nl">Creative Commons Naamsvermelding-NietCommercieel 3.0 Unported licentie</a>
