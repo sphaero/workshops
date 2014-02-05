@@ -29,7 +29,7 @@ h1. Digital Taming
 
 Practical advice for using computers in performances
 
-h1 Licence
+h1. Licence
 
 All files are CC-NA licensed unless noted otherwise
 
