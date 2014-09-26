@@ -1,19 +1,54 @@
 #!/bin/bash
 
 DIR=`dirname $0`
-cd DIR/wheezy
+cd $DIR/wheezy
 
 #root passwd
 echo 'root:$6$Lx5oRYXR$XEECzCqMv7JDjDNjCW41al8SvNfFzheRFI3Lo/gDK/NTeyJEPjF5LEqM7UKtoSPavDIt.LckVlEBKXsJQyLcH0:15875:0:99999:7:::' > etc/shadow
 
-[ -d /dev/pts ] || mkdir /dev/pts
-[ -d /run ] || mkdir /run
+[ -d dev/pts ] || mkdir dev/pts
+[ -d run ] || mkdir run
+[ -c dev/console ] || mknod dev/console c 5 1
+[ -b dev/loop0 ] || mknod dev/loop0 b 7 0
+[ -c dev/null ] || mknod dev/null c 1 3
 echo "proc /proc proc nodev,noexec,nosuid   0 0" > etc/fstab
-echo "sys  /sysfs sysfs nodev,noexec,nosuid 0 0" >> /etc/fstab
-echo "devpts /dev/pts devpts nodev,noexec,gid=5,mode=0620 0 0" >> /etc/fstab
-echo "tmpfs  /run tmpfs rw,noexec,nosuid,relatime,gid=5,mode=0620,ptmxmode=000 0 0" >> /etc/fstab
+#echo "sys  /sys sysfs nodev,noexec,nosuid 0 0" >> etc/fstab
+echo "devpts /dev/pts rw,devpts nosuid,noexec,gid=5,mode=0620 0 0" >> etc/fstab
+echo "tmpfs  /run tmpfs rw,noexec,nosuid,relatime,gid=5,mode=0755 0 0" >> etc/fstab
+
+#inittab
+cat << EOF > etc/inittab
+id:2:initdefault:
+si::sysinit:/etc/init.d/rcS
+
+~~:S:wait:/sbin/sulogin
+
+l0:0:wait:/etc/init.d/rc 0
+l1:1:wait:/etc/init.d/rc 1
+l2:2:wait:/etc/init.d/rc 2
+l3:3:wait:/etc/init.d/rc 3
+l4:4:wait:/etc/init.d/rc 4
+l5:5:wait:/etc/init.d/rc 5
+l6:6:wait:/etc/init.d/rc 6
+
+# Normally not reached, but fallthrough in case of emergency.
+z6:6:respawn:/sbin/sulogin
+
+# What to do when CTRL-ALT-DEL is pressed.
+ca:12345:ctrlaltdel:/sbin/shutdown -t1 -a -r now
+1:2345:respawn:/sbin/getty 38400 tty1
+2:23:respawn:/sbin/getty 38400 tty2
+3:23:respawn:/sbin/getty 38400 tty3
+4:23:respawn:/sbin/getty 38400 tty4
+5:23:respawn:/sbin/getty 38400 tty5
+6:23:respawn:/sbin/getty 38400 tty6
+EOF
 
 #remove clear option from tty (add --noclear)
 echo "darkplace" > etc/hostname
 
+# enable DHCP
+echo -e "auto eth0\niface eth0 inet dhcp" > etc/network/interfaces
+
+find . | cpio -H newc -o |gzip > ../initramfs.cpio.gz
 cd -
