@@ -65,14 +65,6 @@ echo "tmpfs  /run tmpfs rw,noexec,nosuid,relatime,gid=5,mode=0755 0 0" >> etc/fs
 #remove clear option from tty (add --noclear)
 echo "darkplace" > etc/hostname
 
-######################
-# Extra debian sources
-######################
-[ -d etc/apt/sources.list.d ] || mkdir etc/apt/sources.list.d
-filename=etc/apt/sources.list.d/debian.list
-echo Creating $filename
-echo deb http://ftp.nl.debian.org/debian jessie main contrib non-free > $filename
-echo deb http://security.debian.org/ wheezy/updates main contrib non-free >> $filename
 
 ######################
 # Reduce footprint
