@@ -75,18 +75,11 @@ echo deb http://ftp.nl.debian.org/debian jessie main contrib non-free > $filenam
 echo deb http://security.debian.org/ wheezy/updates main contrib non-free >> $filename
 
 ######################
-# Copy kernel module (if available)
-######################
-# install kernel modules
-[ -d lib/modules/ ] || mkdir lib/modules/
-cp -ar lib/modules/3.2.0-4-486/ lib/modules/
-
-######################
 # Reduce footprint
 ######################
 # remove translations, english only
 find usr/share/locale -mindepth 1 -maxdepth 1 \
-  ! -name 'en' |xargs rm -r
+  ! -name 'en' |xargs rm -rf
 # remove unneccesary modules
 rm -rf lib/modules/3.2.0-4-486/kernel/drivers/bluetooth \
   lib/modules/3.2.0-4-486/kernel/drivers/cdrom \
@@ -99,10 +92,10 @@ rm -rf lib/modules/3.2.0-4-486/kernel/drivers/bluetooth \
 # remove documentation
 rm -rf usr/share/doc/*
 
+
 ######################
 # Finally create cpio initramfs archive
 ######################
-
 find . | cpio -o -H newc |gzip > ../jessie-net.cpio.gz
 
 cd -
