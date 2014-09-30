@@ -1,0 +1,101 @@
+#!/bin/bash
+
+if [ "$UID" -ne "0" ]; then
+	echo "You must run this is root or with sudo!"
+	exit 0
+fi
+
+DIR=`dirname $0`
+cd $DIR/jessie-net
+
+######################
+# Create some devices
+######################
+[ -d dev/pts ] || mkdir dev/pts
+[ -d run ] || mkdir run
+[ -c dev/console ] || mknod dev/console c 5 1
+[ -b dev/loop0 ] || mknod dev/loop0 b 7 0
+[ -c dev/null ] || mknod dev/null c 1 3
+[ -c dev/zero ] || mknod -m 666 dev/zero c 1 5
+[ -c dev/ptmx ] || mknod -m 666 dev/ptmx c 5 2
+[ -c dev/tty ] || mknod -m 666 dev/tty c 5 0
+[ -c dev/random ] || mknod -m 444 dev/random c 1 8
+[ -c dev/urandom ] || mknod -m 444 dev/urandom c 1 9
+chown -v root:tty dev/{console,ptmx,tty}
+
+######################
+# Run dpkg
+######################
+echo "Now we configure the system so please anwer any question, exit when complete"
+FILENAME="root/configroot.sh"
+cat > $FILENAME << EOF
+export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
+export LC_ALL=C LANGUAGE=C LANG=C
+/var/lib/dpkg/info/dash.preinst install
+dpkg --configure -a
+mount proc -t proc /proc
+dpkg --configure -a
+umount /proc
+rm /$FILENAME
+EOF
+chmod +x $FILENAME
+chroot . $FILENAME
+
+######################
+# Set root passwd
+######################
+# root passwd
+# echo 'root::0:99999:7:::' > etc/shadow
+# openssl passwd -1 1234
+echo 'root:$1$ooGTAqCu$DbySQWGQMTh25DxOndn7O0:15875:0:99999:7:::' > etc/shadow
+sed -i 's/root:x:/root::/' etc/passwd
+
+
+######################
+# Create /etc/fstab
+######################
+echo "proc /proc proc nodev,noexec,nosuid   0 0" > etc/fstab
+#echo "sys  /sys sysfs nodev,noexec,nosuid 0 0" >> etc/fstab
+echo "devpts /dev/pts rw,devpts nosuid,noexec,gid=5,mode=0620 0 0" >> etc/fstab
+echo "tmpfs  /run tmpfs rw,noexec,nosuid,relatime,gid=5,mode=0755 0 0" >> etc/fstab
+
+######################
+# Set hostname
+######################
+#remove clear option from tty (add --noclear)
+echo "darkplace" > etc/hostname
+
+######################
+# Extra debian sources
+######################
+[ -d etc/apt/sources.list.d ] || mkdir etc/apt/sources.list.d
+filename=etc/apt/sources.list.d/debian.list
+echo Creating $filename
+echo deb http://ftp.nl.debian.org/debian jessie main contrib non-free > $filename
+echo deb http://security.debian.org/ wheezy/updates main contrib non-free >> $filename
+
+######################
+# Copy kernel module (if available)
+######################
+# install kernel modules
+[ -d lib/modules/ ] || mkdir lib/modules/
+cp -ar lib/modules/3.2.0-4-486/ lib/modules/
+# remove unneccesary modules
+rm -rf lib/modules/3.2.0-4-486/kernel/drivers/bluetooth \
+  lib/modules/3.2.0-4-486/kernel/drivers/cdrom \
+  lib/modules/3.2.0-4-486/kernel/drivers/firewire \
+  lib/modules/3.2.0-4-486/kernel/drivers/ieee802154 \
+  lib/modules/3.2.0-4-486/kernel/drivers/infiniband \
+  lib/modules/3.2.0-4-486/kernel/drivers/isdn \
+  lib/modules/3.2.0-4-486/kernel/drivers/pcmcia \
+  lib/modules/3.2.0-4-486/kernel/drivers/telephony
+
+######################
+# Finally create cpio initramfs archive
+######################
+
+find . | cpio -o -H newc |gzip > ../jessie-net.cpio.gz
+
+cd -
+
+exit 0
