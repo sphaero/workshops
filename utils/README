@@ -1,0 +1,30 @@
+These are scripts to generate a minimal initramfs root filesystem
+
+## Requirements
+* multistrap
+* network
+* root privileges
+
+Steps to install a minimal rootfs:
+
+From this directory execute:
+$ sudo multistrap -f multistrap.conf
+
+You should download a linux kernel .deb to this directory, then execute
+$ sudo ./install_kernel.sh
+
+# Finally:
+$ sudo ./multistrap.post
+
+You'll endup with *.cpio.gz file. This file can be loaded by the kernel. E.g:
+$ sudo qemu-system-i386 -m 512 --kernel boot/vmlinuz-3.14-2-486 \
+  --initrd initramfs.cpio.gz --serial stdio \
+  --append "rdinit=/sbin/init root=/dev/ram0 devtmpfs \
+  console=ttyS0 console=tty0 rw"
+
+## Related info:
+
+Since Emdebian is discontinued the multistrap.post script removes files to reduce the footprint
+
+* https://wiki.ubuntu.com/ReducingDiskFootprint
+

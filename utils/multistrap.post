@@ -80,6 +80,13 @@ echo deb http://security.debian.org/ wheezy/updates main contrib non-free >> $fi
 # install kernel modules
 [ -d lib/modules/ ] || mkdir lib/modules/
 cp -ar lib/modules/3.2.0-4-486/ lib/modules/
+
+######################
+# Reduce footprint
+######################
+# remove translations, english only
+find usr/share/locale -mindepth 1 -maxdepth 1 \
+  ! -name 'en' |xargs rm -r
 # remove unneccesary modules
 rm -rf lib/modules/3.2.0-4-486/kernel/drivers/bluetooth \
   lib/modules/3.2.0-4-486/kernel/drivers/cdrom \
@@ -89,6 +96,8 @@ rm -rf lib/modules/3.2.0-4-486/kernel/drivers/bluetooth \
   lib/modules/3.2.0-4-486/kernel/drivers/isdn \
   lib/modules/3.2.0-4-486/kernel/drivers/pcmcia \
   lib/modules/3.2.0-4-486/kernel/drivers/telephony
+# remove documentation
+rm -rf usr/share/doc/*
 
 ######################
 # Finally create cpio initramfs archive
