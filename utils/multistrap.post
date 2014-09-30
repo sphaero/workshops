@@ -26,7 +26,7 @@ chown -v root:tty dev/{console,ptmx,tty}
 ######################
 # Run dpkg
 ######################
-echo "Now we configure the system so please anwer any question, exit when complete"
+echo "Now we configure the system so please anwer any question"
 FILENAME="root/configroot.sh"
 cat > $FILENAME << EOF
 export DEBIAN_FRONTEND=noninteractive DEBCONF_NONINTERACTIVE_SEEN=true
@@ -51,7 +51,7 @@ echo 'root:$1$ooGTAqCu$DbySQWGQMTh25DxOndn7O0:15875:0:99999:7:::' > etc/shadow
 # Comment the next line to set no password for root
 sed -i 's/root::/root:x:/' etc/passwd
 # Enable password login for root through ssh
-sed -i 's/without-password/yes/' etc/sshd/sshd_config
+sed -i 's/without-password/yes/' etc/ssh/sshd_config
 
 ######################
 # Create /etc/fstab
