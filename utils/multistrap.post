@@ -48,7 +48,8 @@ chroot . $FILENAME
 # echo 'root::0:99999:7:::' > etc/shadow
 # openssl passwd -1 1234
 echo 'root:$1$ooGTAqCu$DbySQWGQMTh25DxOndn7O0:15875:0:99999:7:::' > etc/shadow
-sed -i 's/root:x:/root::/' etc/passwd
+# Uncomment the next line to set no password for root
+#sed -i 's/root:x:/root::/' etc/passwd
 
 
 ######################
