@@ -15,6 +15,6 @@ rm -rf debian-binary data.* control.* usr/ lib/ boot/ || true
 ar -x $1
 unxz data.tar.xz
 tar -xf data.tar
-cp -r lib jessie-net/
-depmod -b jessie-net -F boot/System.map-$VERSION $VERSION
+cp -r lib jessie/
+depmod -b jessie -F boot/System.map-$VERSION $VERSION
 rm -rf data.tar control.tar.gz lib/ usr/ debian-binary
