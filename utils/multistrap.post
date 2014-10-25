@@ -6,7 +6,7 @@ if [ "$UID" -ne "0" ]; then
 fi
 
 DIR=`dirname $0`
-cd $DIR/jessie-net
+cd $DIR/jessie
 
 ######################
 # Create some devices
@@ -90,7 +90,7 @@ rm -rf usr/share/doc/*
 ######################
 # Finally create cpio initramfs archive
 ######################
-find . | cpio -o -H newc |gzip > ../jessie-net.cpio.gz
+find . | cpio -o -H newc |gzip > ../jessie.cpio.gz
 
 cd -
 
