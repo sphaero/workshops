@@ -75,17 +75,20 @@ echo "darkplace" > etc/hostname
 find usr/share/locale -mindepth 1 -maxdepth 1 \
   ! -name 'en' |xargs rm -rf
 # remove unneccesary modules
-rm -rf lib/modules/3.2.0-4-486/kernel/drivers/bluetooth \
-  lib/modules/3.2.0-4-486/kernel/drivers/cdrom \
-  lib/modules/3.2.0-4-486/kernel/drivers/firewire \
-  lib/modules/3.2.0-4-486/kernel/drivers/ieee802154 \
-  lib/modules/3.2.0-4-486/kernel/drivers/infiniband \
-  lib/modules/3.2.0-4-486/kernel/drivers/isdn \
-  lib/modules/3.2.0-4-486/kernel/drivers/pcmcia \
-  lib/modules/3.2.0-4-486/kernel/drivers/telephony
+rm -rf lib/modules/*/kernel/drivers/bluetooth \
+  lib/modules/*/kernel/drivers/cdrom \
+  lib/modules/*/kernel/drivers/firewire \
+  lib/modules/*/kernel/drivers/ieee802154 \
+  lib/modules/*/kernel/drivers/infiniband \
+  lib/modules/*/kernel/drivers/isdn \
+  lib/modules/*/kernel/drivers/pcmcia \
+  lib/modules/*/kernel/drivers/telephony
 # remove documentation
+# ref: https://wiki.ubuntu.com/ReducingDiskFootprint
 rm -rf usr/share/doc/*
-
+rm -rf usr/share/man usr/share/groff usr/share/info usr/share/lintian usr/share/linda var/cache/man
+# drop /var/lib/apt files? 14M
+rm -rf var/lib/apt/lists/partial/*
 
 ######################
 # Finally create cpio initramfs archive
