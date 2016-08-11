@@ -1,7 +1,61 @@
 #!/usr/bin/python3
 from random import randint
 
-class Fruit(object):
+
+class TasteError(Exception):
+    pass
+    
+
+class RottenError(Exception):
+    
+    def __init__(self, message, error):
+        super().__init__(message)
+        self.error = error
+
+
+class TastyMixin(object):
+    """
+    This class provides taste comparison operators
+    """
+    @staticmethod
+    def total_taste(fruit):
+        taste = fruit._sourness + fruit._sweetness + fruit._bitterness
+        if taste > 25:
+            raise TasteError("taste explosion {0}".format(taste))
+        return taste
+    
+    def __lt__(self, other):
+        st = self._sourness + self._sweetness + self._bitterness
+        ot = other._sourness + other._sweetness + other._bitterness
+        return self.total_taste(self) < self.total_taste(other)
+
+    def __le__(self, other):
+        st = self._sourness + self._sweetness + self._bitterness
+        ot = other._sourness + other._sweetness + other._bitterness
+        return st <= ot
+
+    def __eq__(self, other):
+        st = self._sourness + self._sweetness + self._bitterness
+        ot = other._sourness + other._sweetness + other._bitterness
+        return st == ot
+
+    def __ne__(self, other):
+        st = self._sourness + self._sweetness + self._bitterness
+        ot = other._sourness + other._sweetness + other._bitterness
+        return st != ot
+    
+    def __gt__(self, other):
+        st = self._sourness + self._sweetness + self._bitterness
+        ot = other._sourness + other._sweetness + other._bitterness
+        return st > ot
+
+    def __ge__(self, other):
+        st = self._sourness + self._sweetness + self._bitterness
+        ot = other._sourness + other._sweetness + other._bitterness
+        return st >= ot
+
+
+class Fruit(TastyMixin):
 
     def __init__( self, vit, weight):
         self.vitamins = vit
@@ -13,8 +67,10 @@ class Fruit(object):
 
     def rot(self):
         self._freshness -= 1
+        if self._freshness < 1:
+            raise RottenError("Fruit {0} has rotten".format(self), self._freshness)
         
-    def is_rotten():
+    def is_rotten(self):
         return self._freshness <= 0
 
     def get_taste(self):
@@ -32,7 +88,6 @@ class Fruit(object):
         self._sourness += other._sourness
         self._sweetness += other._sweetness
         self._bitterness += other._bitterness
-        #should return
 
 
 class Apple(Fruit):
@@ -45,6 +100,7 @@ class Apple(Fruit):
     
     def rot(self):
         self._freshness -= 4
+        super().rot()
 
 
 class Lemon(Fruit):
@@ -58,6 +114,7 @@ class Lemon(Fruit):
     def rot(self):
         self._bitterness += 1
         self._freshness -= 2
+        super().rot()
 
 
 class Nature(object):
@@ -69,7 +126,7 @@ class Nature(object):
         to_delete = []
         for fruit in self.fruits:
             fruit.rot()
-            if fruit.is_rotten:
+            if fruit.is_rotten():
                 to_delete.append(fruit)
                 
         for fruit in to_delete:
@@ -87,4 +144,8 @@ for x in range(20):
 
 Nature(fruits).run()
 
-Apple(20,20) + Lemon(10,10)
+a = Apple(20,20)
+l = Lemon(10,10)
+a+l
+print(a>l)
+print(a<l)
