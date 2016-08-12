@@ -11,7 +11,7 @@ class Fruit(object):
     def rot(self):
         self._freshness -= 1
         
-    def is_rotten():
+    def is_rotten(self):
         return self._freshness <= 0
 
     def get_taste(self):
@@ -54,7 +54,7 @@ class Nature(object):
         to_delete = []
         for fruit in self.fruits:
             fruit.rot()
-            if fruit.is_rotten:
+            if fruit.is_rotten():
                 to_delete.append(fruit)
                 
         for fruit in to_delete:
